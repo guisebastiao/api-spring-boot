@@ -1,4 +1,4 @@
-package com.guisebastiao.apispringboot.security;
+package com.guisebastiao.apispringboot.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;

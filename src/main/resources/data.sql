@@ -1,8 +1,8 @@
 INSERT INTO USERS (ID, NAME, EMAIL, PASSWORD, CREATED_AT, UPDATED_AT) 
-VALUES ('950ed179-05a3-491d-91b4-9cd373123ecc', 'João da Silva', 'joaodasilva@email.com', 'Senha123@', '2025-03-12 09:31:28.758015', '2025-03-12 09:31:28.758015');
+VALUES ('950ed179-05a3-491d-91b4-9cd373123ecc', 'João da Silva', 'joaodasilva@email.com', '$2a$10$3/qOSmxAOBOB3EoneYfD5eipLmZgcIT2Rm46zfG2SZskSrpQylrUm', '2025-03-12 09:31:28.758015', '2025-03-12 09:31:28.758015');
 
 INSERT INTO USERS (ID, NAME, EMAIL, PASSWORD, CREATED_AT, UPDATED_AT) 
-VALUES ('12276a73-9d92-4f95-b88e-6ca1ebc1f20c', 'Pedro da Silva', 'pedrodasilva@email.com', 'Senha123@', '2025-03-12 09:31:41.013943', '	2025-03-12 09:31:41.013943');
+VALUES ('12276a73-9d92-4f95-b88e-6ca1ebc1f20c', 'Pedro da Silva', 'pedrodasilva@email.com', '$2a$10$3/qOSmxAOBOB3EoneYfD5eipLmZgcIT2Rm46zfG2SZskSrpQylrUm', '2025-03-12 09:31:41.013943', '	2025-03-12 09:31:41.013943');
 
 INSERT INTO USERS (ID, NAME, EMAIL, PASSWORD, CREATED_AT, UPDATED_AT) 
-VALUES ('2bbdf10c-588b-4343-a785-363af4cf2497', 'Luiz da Silva', 'luizdasilva@email.com', 'Senha123@', '2025-03-12 09:31:52.55899', '	2025-03-12 09:31:52.55899');
+VALUES ('2bbdf10c-588b-4343-a785-363af4cf2497', 'Luiz da Silva', 'luizdasilva@email.com', '$2a$10$3/qOSmxAOBOB3EoneYfD5eipLmZgcIT2Rm46zfG2SZskSrpQylrUm', '2025-03-12 09:31:52.55899', '	2025-03-12 09:31:52.55899');

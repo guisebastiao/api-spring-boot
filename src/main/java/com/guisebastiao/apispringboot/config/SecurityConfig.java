@@ -1,4 +1,4 @@
-package com.guisebastiao.apispringboot.security;
+package com.guisebastiao.apispringboot.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,23 +14,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.guisebastiao.apispringboot.security.JwtAutenticationEntryPoint;
+import com.guisebastiao.apispringboot.security.SecurityFilter;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
   @Autowired
   SecurityFilter securityFilter;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
+    return http
         .csrf(csrf -> csrf.disable())
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+            .requestMatchers("/h2-console/**").permitAll()
             .anyRequest().authenticated())
-        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
-    return http.build();
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+        .httpBasic(httpBasic -> httpBasic.disable())
+        .formLogin(form -> form.disable())
+        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling(ex -> ex.authenticationEntryPoint(new JwtAutenticationEntryPoint()))
+        .build();
   }
 
   @Bean

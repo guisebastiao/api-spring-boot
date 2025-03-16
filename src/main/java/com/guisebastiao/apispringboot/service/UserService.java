@@ -9,10 +9,12 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.guisebastiao.apispringboot.controller.dto.UserRequestDto;
 import com.guisebastiao.apispringboot.entity.User;
-import com.guisebastiao.apispringboot.exceptions.UserAlreadyExistsException;
+import com.guisebastiao.apispringboot.exceptions.UserNotFoundException;
 import com.guisebastiao.apispringboot.repository.UserRepository;
 
 import lombok.Data;
@@ -23,19 +25,12 @@ public class UserService {
 
   private final UserRepository repository;
 
-  public void create(User user) {
-    Optional<User> existUser = repository.findByEmail(user.getEmail());
-
-    if (existUser.isPresent()) {
-      throw new UserAlreadyExistsException("Esse usuário já está cadastrado");
-    }
-
-    repository.save(user);
-  }
+  private final PasswordEncoder encoder;
 
   public Optional<User> findById(String id) {
     var userId = UUID.fromString(id);
-    return repository.findById(userId);
+    Optional<User> user = repository.findById(userId);
+    return user;
   }
 
   public List<User> search(String name, int offset, int limit) {
@@ -59,15 +54,35 @@ public class UserService {
     return resultPage.getContent();
   }
 
-  public void update(User user) {
-    if (user.getId() == null) {
-      throw new IllegalArgumentException("Usuário não encontrado");
+  public void update(UserRequestDto dto, Object userId) {
+    UUID id = UUID.fromString(userId.toString());
+
+    Optional<User> userFound = repository.findById(id);
+
+    if (userFound.isEmpty()) {
+      throw new UserNotFoundException("Usuário não foi encontrado");
     }
+
+    User user = new User();
+
+    user.setId(id);
+    user.setName(dto.getName());
+    user.setEmail(dto.getEmail());
+    user.setPassword(encoder.encode(dto.getPassword()));
+    user.setCreatedAt(userFound.get().getCreatedAt());
 
     repository.save(user);
   }
 
-  public void delete(User user) {
-    repository.delete(user);
+  public void delete(Object userId) {
+    UUID id = UUID.fromString(userId.toString());
+
+    Optional<User> user = repository.findById(id);
+
+    if (user.isEmpty()) {
+      throw new UserNotFoundException("Usuário não foi encontrado");
+    }
+
+    repository.delete(user.get());
   }
 }
